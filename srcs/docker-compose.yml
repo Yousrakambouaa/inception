@@ -23,6 +23,20 @@ services:
       - inception-net
     restart: always
 
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    env_file: .env
+    ports:
+      - "443:443"
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - inception-net
+    restart: always
+
 volumes:
   db_data:
     driver: local
