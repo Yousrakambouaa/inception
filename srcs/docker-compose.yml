@@ -1,0 +1,41 @@
+# version: '3'
+
+services:
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    env_file: .env
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - inception-net
+    restart: always
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    env_file: .env
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - mariadb
+    networks:
+      - inception-net
+    restart: always
+
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ykamboua/data/db_data
+      o: bind
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ykamboua/data/wordpress_files
+      o: bind
+
+networks:
+  inception-net:
