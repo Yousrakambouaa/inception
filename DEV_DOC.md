@@ -1,46 +1,43 @@
-### DEV_DOC.md (Developer Documentation – How to Set Up & Maintain)
+### DEV_DOC.md (Developer documentation, how to Set up & maintain)
 
-```markdown
 # Developer Documentation – Inception
 
 ## Set Up the Environment from Scratch
 1. Clone the repository.
 2. Install Docker and Docker Compose on a virtual machine.
 3. Create the data directories:
-   ```bash
-   mkdir -p /home/ykamboua/data/db_data /home/ykamboua/data/wordpress_files
+   `mkdir -p /home/ykamboua/data/db_data /home/ykamboua/data/wordpress_files`
+4. Add domain to hosts: `echo "127.0.0.1 ykamboua.42.fr" | sudo tee -a /etc/hosts`
+5. Create srcs/.env file with required variables.
 
-### DEV_DOC.md (Developer Documentation – How to Set Up & Maintain)
+### Build and Launch the project
 
-```markdown
-# Developer Documentation – Inception
+From project root:
+`make up -d : Build images and start containers`
+`make down   : Stop and remove containers`
+`make        : Rebuild if changes made`
 
-## Set Up the Environment from Scratch
-1. Clone the repository.
-2. Install Docker and Docker Compose on a virtual machine.
-3. Create the data directories:
-   ```bash
-   mkdir -p /home/ykamboua/data/db_data /home/ykamboua/data/wordpress_files
-
-Manage Containers and Volumes
+### Manage Containers and Volumes
 
 List containers: docker ps
-View logs: docker logs <container_name>
-Enter container: docker exec -it <container_name> sh
-Reset data (fresh start):Bashmake down
-sudo rm -rf /home/ykamboua/data/*
-make up -d
+View logs: 
+   docker logs <container_name>
+Enter container: 
+   docker exec -it <container_name> sh
+Reset data (fresh start):
+   make down 
+   sudorm -rf /home/ykamboua/data/*
+   make up -d
 
-Data Storage and Persistence
+### Data storage and persistence
 
-Database files: bind-mounted to /home/ykamboua/data/db_data
-WordPress files: bind-mounted to /home/ykamboua/data/wordpress_files
-Data survives container removal (make down) thanks to bind mounts.
-All containers use Alpine 3.22 (penultimate stable as of December 2025).
+Database files: bind mounted to /home/ykamboua/data/db_data
+WordPress files: bind mounted to /home/ykamboua/data/wordpress_files
+Data survives container removal thanks to bind mounts.
+All containers use Alpine 3.22 its penultimate stable as of December 2025.
 
-Notes
-
-No Docker secrets used – credentials in .env (gitignored).
+### Notes
+No Docker secrets used, credentials in .env (gitignored).
 Custom bridge network inception-net for internal communication.
-Restart policy: always – containers auto-restart on crash.
+Restart policy: always containers auto restart on crash.
 
